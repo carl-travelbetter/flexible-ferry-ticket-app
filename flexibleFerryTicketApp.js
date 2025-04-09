@@ -1,28 +1,13 @@
-const ferryData = [
-  {
-    operator: "P&O Ferries",
-    crossings: ["doverCalais"],
-    amendments: "No amendment fees with Flexi; fare difference may apply.",
-    cancellations: "Fully refundable with Premium Flexi.",
-    link: "https://fave.co/4jgccso"
-    
-  },
-  {
-    operator: "DFDS",
-    crossings: ["doverCalais", "newhavenDieppe", "doverDunkirk"],
-    amendments: "Free changes up to 24 hours before departure.",
-    cancellations: "Full refund if canceled 24+ hours in advance.",
-    link: "https://fave.co/3FSVPDS"
-  },
-  {
-    operator: "Brittany Ferries",
-    crossings: ["pooleCherbourg", "portsmouthCaen", "portsmouthStMalo", "portsmouthCherbourg", "portsmouthLeHarve", "plymouthRoscoff", "rosslareDunkirk"],
-    amendments: "Free changes up to 24 hours before departure.",
-    cancellations: "Full refund if canceled 24+ hours in advance.",
-    link: "https://tidd.ly/42hkKIO"
-  }
-  // Add more as needed
-];
+let ferryData = [];
+
+fetch('ferryData.json')
+  .then(response => response.json())
+  .then(data => {
+    ferryData = data;
+    console.log("Ferry data loaded:", ferryData);
+  })
+  .catch(error => console.error("Error loading ferry data:", error));
+
 
 function searchByCrossing() {
     const results = document.getElementById("crossingResults");
@@ -40,6 +25,7 @@ function searchByCrossing() {
          card.classList.add("ferryCard");
          card.innerHTML = `
         <h3>${ferry.operator}</h3>
+        <p><strong>Travelbetter Rating:</strong> ⭐ ${ferry.travelbetterRating} / 5</p>
         <p><strong>Amendments:</strong> ${ferry.amendments}</p>
         <p><strong>Cancellations:</strong> ${ferry.cancellations}</p>
         <p><a href="${ferry.link}" target="_blank" rel="noopener noreferrer">Book with ${ferry.operator} today</a></p>
@@ -65,6 +51,7 @@ function searchByProvider() {
             <p><strong>Amendments:</strong> ${matching.amendments}</p>
             <p><strong>Cancellations:</strong> ${matching.cancellations}</p>
             <p><a href="${matching.link}" target="_blank" rel="noopener noreferrer">Book with ${matching.operator} today</a></p>
+            <p>Travelbetter Rating * ${matching.travelbetterRating} / 5 </p>
         `;
         results.appendChild(card);
     } else {
